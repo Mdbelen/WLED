@@ -204,10 +204,10 @@ Realtime LED offset: <input name="WO" type="number" min="-255" max="255" require
 </div>
 <div id="dmxOutput" style="display: none">
 	<h3>Wired DMX Output Pin</h3>
-	DMX TX: <input name="IDMO" type="number" min="-1" max="99"><br/>
+	DMX TX Pin: <input name="IDMOP" type="number" min="-1" max="99"><br/>
 	DMX Serial Port: <input name="IDMOS" type="number" min="1" max="2"><br/>
-	DMX update rate: <input name="IDMUR" type="number" min="0" max="43">
-	<p>Use 0 for controller max refresh rate. 43 is theoretical maximum.</p>
+	DMX update rate: <input name="IDMUR" type="number" min="0" max="44">
+	<p>Use 0 for controller max refresh rate. 44 is the theoretical maximum, achievable 42-43.</p>
 </div>
 <div id="dmxInputOff">
 	<br><i class="warn">This firmware build does not include DMX Input support.</i>

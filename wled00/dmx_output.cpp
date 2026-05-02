@@ -11,6 +11,12 @@
 
 bool DMXOutput::init(int8_t outputPin, uint8_t updateRate, int8_t uartNo) {
 
+  // using any number below 0 is like calling end() but will return false
+  if((uartNo < 0) || (outputPin < 0)) {
+    end();
+    return false;
+  }
+
   // If already initialized, check whether any config changed and update accordingly
   if(_uartNo >= 0) {
     if((uartNo != _uartNo) || (outputPin != _outputPin)) {
@@ -24,7 +30,6 @@ bool DMXOutput::init(int8_t outputPin, uint8_t updateRate, int8_t uartNo) {
   }
 
 #ifdef ESP8266
-  if(uartNo == -1) uartNo = 1;
   if((uartNo != 1) || (outputPin != 2)) {
     DEBUG_PRINTF_P(PSTR("DMXOutput: Can only run with UART1, TX pin 2 on ESP8266."));
     return false;
@@ -32,16 +37,12 @@ bool DMXOutput::init(int8_t outputPin, uint8_t updateRate, int8_t uartNo) {
   #else // not ESP8266
   static_assert(SOC_UART_NUM > 1, "DMX output is not possible on your MCU, as it does not have HardwareSerial(1)");
 
-  if(uartNo == -1) {
-    uartNo = SOC_UART_NUM - 1;    // use last UART as default
-  }
   if(uartNo == 0) {
     DEBUG_PRINTF_P(PSTR("DMXOutput: Error: Cannot run on chips with <=1 hardware UART, or with UART0."));
     return false;
   }
   #endif // ESP32
 
-  if(outputPin < 0) return false;
   const bool pinAllocated = PinManager::allocatePin(outputPin, true, PinOwner::DMX_OUTPUT);
   if(!pinAllocated) {
     DEBUG_PRINTF_P(PSTR("DMXOutput: Error: Failed to allocate pin %d for DMX output\n"), outputPin);

@@ -475,9 +475,13 @@ void handleSettingsSet(AsyncWebServerRequest *request, byte subPage)
     if (t >= -255  && t <= 255) arlsOffset = t;
 
 #ifdef WLED_ENABLE_DMX
-    dmxOutputPin = request->arg(F("IDMO")).toInt();
-    dmxOutputSerialNum = request->arg(F("IDMOS")).toInt();
-    dmxOutputRefreshrate = request->arg(F("IDMORR")).toInt();
+    t = request->arg(F("IDMOP")).toInt();
+    dmxOutputPin = t < -1 ? -1 : (t > 127 ? 127 : t);
+    t = request->arg(F("IDMOS")).toInt();
+    dmxOutputSerialNum = t < -1 ? -1 : (t > 127 ? 127 : t);
+    t = request->arg(F("IDMORR")).toInt();
+    dmxOutputRefreshrate = t < 0 ? 0 : (t > 255 ? 255 : t);
+    // init will deal with detecting what changed
     dmxOutput.init(dmxOutputPin, dmxOutputRefreshrate, dmxOutputSerialNum);
 #endif
 #ifdef WLED_ENABLE_DMX_INPUT

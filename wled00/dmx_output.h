@@ -21,6 +21,22 @@
 
 #include <Arduino.h>
 
+// user configurable
+#ifndef DMXO_RR_DEFAULT
+  #define DMXO_RR_DEFAULT     42   // default DMX refresh reate if not set
+#endif
+#ifndef DMXO_SERNUM_DEFAULT
+  #define DMXO_SERNUM_DEFAULT (SOC_UART_NUM - 1)  // default serial port number = highest serial available
+#endif
+#ifndef DMXO_TXPIN_DEFAULT
+  #ifdef ESP8266    // TXPIN must be pin 2
+    #define DMXO_TXPIN_DEFAULT 2
+  #else             // TXPIN can be anything
+    #define DMXO_TXPIN_DEFAULT 2
+  #endif
+#endif
+
+
 #define DMX_CHANNEL_TOP 512
 #define DMX_CHANNELS (DMX_CHANNEL_TOP + 1)
 
@@ -35,11 +51,11 @@ class DMXOutput {
     ~DMXOutput();
     /**
     * Initialize DMXOutput.
-    * Use _outputPin_ for TX.
-    * _updateRate_ specifies update rate in Hz. Use 0 for max. Default is 40.
-    * Use Serial _uartNo_. Specify -1 for default, which is the highest one available.
+    * Use _outputPin_ for TX. Use -1 to disable output.
+    * _updateRate_ specifies update rate in Hz. Use 0 for max. Default is 42.
+    * Use Serial _uartNo_. Use -1 to disabled ouput. Default is the highest one available.
     */
-    bool init(int8_t outputPin, uint8_t updateRate = 40, int8_t uartNo = -1);
+    bool init(int8_t outputPin, uint8_t updateRate = DMXO_RR_DEFAULT, int8_t uartNo = DMXO_SERNUM_DEFAULT);
     void end();
     /**
      * Write one DMX _channel_ to _value_.
