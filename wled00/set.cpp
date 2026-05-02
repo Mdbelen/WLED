@@ -476,6 +476,9 @@ void handleSettingsSet(AsyncWebServerRequest *request, byte subPage)
 
 #ifdef WLED_ENABLE_DMX
     dmxOutputPin = request->arg(F("IDMO")).toInt();
+    dmxOutputSerialNum = request->arg(F("IDMOS")).toInt();
+    dmxOutputRefreshrate = request->arg(F("IDMORR")).toInt();
+    dmxOutput.init(dmxOutputPin, dmxOutputRefreshrate, dmxOutputSerialNum);
 #endif
 #ifdef WLED_ENABLE_DMX_INPUT
     dmxInputTransmitPin = request->arg(F("IDMT")).toInt();

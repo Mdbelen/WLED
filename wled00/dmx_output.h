@@ -36,10 +36,10 @@ class DMXOutput {
     /**
     * Initialize DMXOutput.
     * Use _outputPin_ for TX.
-    * _updateRate_ specifies update rate in Hz. Use 0 for max.
+    * _updateRate_ specifies update rate in Hz. Use 0 for max. Default is 40.
     * Use Serial _uartNo_. Specify -1 for default, which is the highest one available.
     */
-    bool init(int8_t outputPin, uint8_t updateRate = 43, int8_t uartNo = -1);
+    bool init(int8_t outputPin, uint8_t updateRate = 40, int8_t uartNo = -1);
     void end();
     /**
      * Write one DMX _channel_ to _value_.

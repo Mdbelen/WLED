@@ -571,7 +571,7 @@ void WLED::setup()
   }
 #endif
 #ifdef WLED_ENABLE_DMX
-  dmxOutput.init(dmxOutputPin, 43);
+  dmxOutput.init(dmxOutputPin, dmxOutputRefreshrate, dmxOutputSerialNum);
 #endif
 #ifdef WLED_ENABLE_DMX_INPUT
   dmxInput.init(dmxInputReceivePin, dmxInputTransmitPin, dmxInputEnablePin, dmxInputPort);
@@ -743,7 +743,7 @@ void WLED::initConnection()
 
   if (WLED_WIFI_CONFIGURED) {
     showWelcomePage = false;
-    
+
     DEBUG_PRINTF_P(PSTR("Connecting to %s...\n"), multiWiFi[selectedWiFi].clientSSID);
 
 #ifdef WLED_ENABLE_WPA_ENTERPRISE
